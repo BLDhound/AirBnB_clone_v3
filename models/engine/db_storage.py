@@ -80,7 +80,16 @@ class DBStorage:
         cls = classes.get(cls, None)
         return self.__session.query(cls).filter(cls.id == id).first() \
             if cls else None
-
+        
     def count(self, cls=None):
-        """Returns the number of objects in storage matching the given class"""
-        return len(self.all(cls))
+        """Count the number of objects in storage"""
+        if cls:
+            return self.__session.query(cls).count()
+        count = 0
+        for k, v in models.storage.all().items():
+            if cls:
+                if type(v) == cls:
+                    count += 1
+                else:
+                    count += 1
+            return count
